@@ -20,10 +20,10 @@ const FUNCTIONS_BASE_URL = "https://us-central1-YOUR_PROJECT_ID.cloudfunctions.n
 
 // Razorpay PUBLIC key only (starts with rzp_). NEVER put your key_secret
 // anywhere in this folder — it belongs only in functions/index.js on the server.
-const RAZORPAY_KEY_ID = "rzp_test_XXXXXXXXXXXX";
+const RAZORPAY_KEY_ID = "rzp_test_TY7rQmNpeCfrPQ";
 
 // Email address(es) allowed to use admin.html to add/edit products.
-const ADMIN_EMAILS = ["you@example.com"];
+const ADMIN_EMAILS = ["pathakanubhav74@gmail.com"];
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();

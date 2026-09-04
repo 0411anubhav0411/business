@@ -124,7 +124,8 @@ auth.onAuthStateChanged((user) => {
 
 document.getElementById("authBtn").addEventListener("click", () => {
   if (currentUser) {
-    if (confirm(`Signed in as ${currentUser.email}. Sign out?`)) signOutUser();
+    // Redirect to profile page (or admin page) when clicked
+window.location.href = "profile.html"; // Change to "admin.html" if you want admins to go directly to admin dashboard
   } else {
     openAuth("signin");
   }

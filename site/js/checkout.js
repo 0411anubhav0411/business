@@ -50,7 +50,7 @@ async function startCheckout() {
       key: RAZORPAY_KEY_ID,
       amount: order.amount,
       currency: order.currency,
-      name: "Shilpkala Studio",
+      name: "Akaar Creations",
       description: `${lines.length} item(s)`,
       order_id: order.id,
       prefill: {

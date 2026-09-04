@@ -4,10 +4,10 @@
 // Sign-in is required only at checkout, in checkout.js.
 // ============================================================
 
-let cart = JSON.parse(localStorage.getItem("shilpkala_cart") || "{}"); // { productId: qty }
+let cart = JSON.parse(localStorage.getItem("akaar_cart") || "{}"); // { productId: qty }
 
 function saveCart() {
-  localStorage.setItem("shilpkala_cart", JSON.stringify(cart));
+  localStorage.setItem("akaar_cart", JSON.stringify(cart));
   renderCartCount();
 }
 

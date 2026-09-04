@@ -4,6 +4,9 @@
 // or the Firebase console (Authentication tab + "users" collection).
 // ============================================================
 
+// List of admin email addresses eligible for admin dashboard access
+const ADMIN_EMAILS = ["busineswithpathak@gmail.com"];
+
 let currentUser = null;
 let authMode = "signin"; // or "signup"
 
@@ -15,9 +18,11 @@ function openAuth(mode = "signin") {
   document.getElementById("authError").style.display = "none";
   refreshAuthModalText();
 }
+
 function closeAuth() {
   document.getElementById("authOverlay").classList.remove("open");
 }
+
 function refreshAuthModalText() {
   const isSignup = authMode === "signup";
   document.getElementById("authTitle").textContent = isSignup ? "Create an account" : "Sign in";
@@ -35,6 +40,7 @@ function refreshAuthModalText() {
     refreshAuthModalText();
   };
 }
+
 function showAuthError(msg) {
   const el = document.getElementById("authError");
   el.textContent = msg;
@@ -42,8 +48,6 @@ function showAuthError(msg) {
 }
 
 // Writes/updates a doc in Firestore "users" collection every time someone logs in.
-// This is how you "know who logged in on the site" from outside Firebase Auth's
-// own dashboard — e.g. to show a customer list in admin.html.
 async function recordLogin(user) {
   const ref = db.collection("users").doc(user.uid);
   const snap = await ref.get();
@@ -122,15 +126,32 @@ auth.onAuthStateChanged((user) => {
   }
 });
 
+// Profile Icon Navigation
 document.getElementById("authBtn").addEventListener("click", () => {
   if (currentUser) {
-    // Redirect to profile page (or admin page) when clicked
-window.location.href = "profile.html"; // Change to "admin.html" if you want admins to go directly to admin dashboard
+    if (ADMIN_EMAILS.includes(currentUser.email)) {
+      window.location.href = "admin.html";
+    } else {
+      window.location.href = "profile.html";
+    }
   } else {
     openAuth("signin");
   }
 });
+
 document.getElementById("closeAuth").addEventListener("click", closeAuth);
 document.getElementById("authOverlay").addEventListener("click", (e) => {
   if (e.target.id === "authOverlay") closeAuth();
+});
+
+// Global Logout Handler for logout buttons across pages
+document.addEventListener("DOMContentLoaded", () => {
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      auth.signOut().then(() => {
+        window.location.href = "index.html";
+      });
+    });
+  }
 });

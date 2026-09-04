@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Anyone can browse products; only admins should write (do this from
+    // admin.html while signed in as an ADMIN_EMAILS account, or the console).
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if request.auth != null; // tighten to a custom-claim/admin check for production
+    }
+
+    // Each user can only read/write their own profile doc.
+    // The doc is created by auth.js on every login.
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null; // lets admin.html list customers; scope this down for production
+    }
+
+    // Orders are only ever written by the Cloud Functions (Admin SDK,
+    // which bypasses these rules) — clients can only read their own.
+    match /orders/{orderId} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+  }
+}

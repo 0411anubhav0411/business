@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shilpkala Studio — Handcrafted Statues &amp; Fountains</title>
+<meta name="description" content="Bronze and stone statues, courtyard fountains and temple décor, cast and carved to order.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav id="nav">
+  <div class="wrap">
+    <a href="#hero" class="brand">Shilpkala <span>Studio</span></a>
+    <div class="navlinks">
+      <a href="#shop">Shop</a>
+      <a href="#statues">Statues</a>
+      <a href="#fountains">Fountains</a>
+      <a href="#process">Our Process</a>
+    </div>
+    <div class="navicons">
+      <button class="navicon-btn" id="authBtn" aria-label="Account">👤</button>
+      <button class="navicon-btn" id="cartBtn" aria-label="Cart">
+        🛍️<span class="cart-count" id="cartCount" style="display:none">0</span>
+      </button>
+      <button class="navburger" id="burgerBtn" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header id="hero">
+  <div class="hero-inner wrap">
+    <div class="hero-eyebrow">HAND-CAST IN BRONZE &amp; STONE · <b>MADE TO ORDER</b></div>
+    <h1>Sculpture for the <em>courtyard</em>,<br>craft for the home.</h1>
+    <p class="hero-sub">Every statue is cast and every fountain carved by our own artisans — pieces built to stand outdoors for generations, not decorate a shelf.</p>
+    <div class="hero-cta">
+      <a href="#shop" class="btn btn-solid">Browse the collection</a>
+      <a href="#process" class="btn btn-ghost">See how it's made</a>
+    </div>
+  </div>
+  <div class="hero-strip">
+    <div class="wrap">
+      <div class="hero-stat"><b>500+</b>pieces delivered</div>
+      <div class="hero-stat"><b>100%</b>hand finished</div>
+      <div class="hero-stat"><b>Pan-India</b>shipping &amp; installation</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ CATEGORIES ============ -->
+<section class="section wrap">
+  <div class="cat-grid">
+    <div class="cat-tile" id="statues">
+      <img src="https://images.unsplash.com/photo-1608376619312-9a8f0e9c5b98?q=80&w=1200&auto=format&fit=crop" alt="Bronze statue" onerror="this.style.display='none'">
+      <div class="cat-tile-body">
+        <span class="tag">STATUES</span>
+        <h3>Bronze &amp; marble figures</h3>
+        <a href="#shop" onclick="setFilter('statues')">Shop statues →</a>
+      </div>
+    </div>
+    <div class="cat-tile" id="fountains">
+      <img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=1200&auto=format&fit=crop" alt="Courtyard fountain" onerror="this.style.display='none'">
+      <div class="cat-tile-body">
+        <span class="tag">FOUNTAINS</span>
+        <h3>Courtyard &amp; wall fountains</h3>
+        <a href="#shop" onclick="setFilter('fountains')">Shop fountains →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHOP GRID ============ -->
+<section class="section wrap" id="shop">
+  <div class="section-head">
+    <div>
+      <h2>The collection</h2>
+      <p>Filter by category, or search for a material, deity or size.</p>
+    </div>
+  </div>
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-filter="all">All pieces</button>
+    <button class="filter-btn" data-filter="statues">Statues</button>
+    <button class="filter-btn" data-filter="fountains">Fountains</button>
+    <button class="filter-btn" data-filter="garden">Garden décor</button>
+  </div>
+  <div class="gallery" id="gallery">
+    <div class="empty-state">Loading the collection…</div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section id="process">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:0">
+      <div><h2>From clay to courtyard</h2></div>
+    </div>
+  </div>
+  <div class="process wrap" style="padding:0">
+    <div class="process-item">
+      <div class="process-num">01 — Sketch &amp; mould</div>
+      <h3>Modelled by hand</h3>
+      <p>Every design starts as a clay maquette, refined with you before a mould is ever cut.</p>
+    </div>
+    <div class="process-item">
+      <div class="process-num">02 — Cast &amp; carve</div>
+      <h3>Bronze poured, stone cut</h3>
+      <p>Lost-wax casting for bronze work; hand-chiselled sandstone and marble for statuary.</p>
+    </div>
+    <div class="process-item">
+      <div class="process-num">03 — Finish &amp; install</div>
+      <h3>Delivered and set up</h3>
+      <p>Patina finishing, packing built for transit, and on-site installation for fountains.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:14px">Shilpkala <span>Studio</span></div>
+        <p>A family atelier casting bronze statues and carving stone fountains for homes, gardens and temples.</p>
+      </div>
+      <div>
+        <h4>SHOP</h4>
+        <ul><li><a href="#shop">All pieces</a></li><li><a href="#statues">Statues</a></li><li><a href="#fountains">Fountains</a></li></ul>
+      </div>
+      <div>
+        <h4>STUDIO</h4>
+        <ul><li><a href="#process">Our process</a></li><li><a href="#">Custom commissions</a></li><li><a href="#">Delivery &amp; installation</a></li></ul>
+      </div>
+      <div>
+        <h4>CONTACT</h4>
+        <ul><li>hello@shilpkala.studio</li><li>+91 00000 00000</li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Shilpkala Studio. All rights reserved.</span>
+      <span>Payments secured by Razorpay</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ PRODUCT MODAL ============ -->
+<div class="overlay" id="productOverlay">
+  <div class="modal" id="productModal"></div>
+</div>
+
+<!-- ============ CART DRAWER ============ -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="cartDrawer">
+  <div class="drawer-head">
+    <h3>Your cart</h3>
+    <button class="modal-close" style="position:static" id="closeCart">✕</button>
+  </div>
+  <div class="drawer-items" id="drawerItems"></div>
+  <div class="drawer-foot">
+    <div class="drawer-total"><span>Total</span><b id="cartTotal">₹0</b></div>
+    <button class="btn btn-solid" id="checkoutBtn">Checkout</button>
+  </div>
+</aside>
+
+<!-- ============ AUTH MODAL ============ -->
+<div class="overlay" id="authOverlay">
+  <div class="modal auth-modal" id="authModalBody">
+    <button class="modal-close" id="closeAuth">✕</button>
+    <h2 id="authTitle">Sign in</h2>
+    <p class="sub" id="authSub">Sign in to check out and track your orders.</p>
+    <div class="auth-error" id="authError"></div>
+    <div id="authFields">
+      <div class="field" id="nameField" style="display:none">
+        <label>Full name</label>
+        <input type="text" id="authName" placeholder="Your name">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="authEmail" placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="authPassword" placeholder="••••••••">
+      </div>
+    </div>
+    <button class="btn btn-solid" id="authSubmit">Sign in</button>
+    <div class="auth-alt">or</div>
+    <button class="google-btn" id="googleBtn">Continue with Google</button>
+    <p class="auth-switch" id="authSwitch">New here? <a href="#" id="toSignup">Create an account</a></p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Firebase (compat SDK — plain <script> tags, no build step needed) -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+
+<!-- Razorpay checkout -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script src="js/auth.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/checkout.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

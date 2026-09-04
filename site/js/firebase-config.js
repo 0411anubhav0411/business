@@ -4,12 +4,13 @@
 // → "Your apps" → Web app → SDK setup and configuration
 // ============================================================
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBVAn-y0Ro1IThj9MobLnUdrQ26f5TJTi8",
+  authDomain: "akar-creations-1e5fb.firebaseapp.com",
+  projectId: "akar-creations-1e5fb",
+  storageBucket: "akar-creations-1e5fb.firebasestorage.app",
+  messagingSenderId: "899969749265",
+  appId: "1:899969749265:web:fe079f35828d84f290bcb0",
+  measurementId: "G-1LJDG22V0S"
 };
 
 // Cloud Function base URL — after you deploy functions (see README),

@@ -1,14 +1,4 @@
 // Handle Google redirect result on page load (mobile)
-auth.getRedirectResult().then(async (result) => {
-  if (result && result.user) {
-    await recordLogin(result.user);
-    closeAuth();
-  }
-}).catch((err) => {
-  if (err.code !== 'auth/no-auth-event') {
-    showAuthError(friendlyAuthError(err));
-  }
-});
 
 let currentUser = null;
 let authMode = "signin";

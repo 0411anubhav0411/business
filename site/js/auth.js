@@ -109,9 +109,12 @@ function signOutUser() {
 }
 
 // Keep UI in sync with auth state
+// Keep UI in sync with auth state
 auth.onAuthStateChanged((user) => {
   currentUser = user;
   const btn = document.getElementById("authBtn");
+  if (!btn) return;
+
   if (user) {
     const initial = (user.displayName || user.email || "?").charAt(0).toUpperCase();
     btn.innerHTML = `<span class="user-chip"><span class="avatar">${initial}</span></span>`;
@@ -120,7 +123,21 @@ auth.onAuthStateChanged((user) => {
     btn.innerHTML = "👤";
     btn.title = "Sign in";
   }
-});
+
+  // PLACE THE CLICK LISTENER HERE:
+  btn.onclick = () => {
+    if (currentUser) {
+      const allowedAdmins = typeof ADMIN_EMAILS !== "undefined" ? ADMIN_EMAILS : ["pathakanubhav74@gmail.com"];
+      if (allowedAdmins.includes(currentUser.email)) {
+        window.location.href = "admin.html";
+      } else {
+        window.location.href = "profile.html";
+      }
+    } else {
+      openAuth("signin");
+    }
+  };
+}););
 
 document.getElementById("authBtn").addEventListener("click", () => {
   if (currentUser) {

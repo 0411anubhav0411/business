@@ -5,7 +5,7 @@
 // ============================================================
 const firebaseConfig = {
   apiKey: "AIzaSyBVAn-y0Ro1IThj9MobLnUdrQ26f5TJTi8",
-  authDomain: "akar-creations-1e5fb.firebaseapp.com",
+  authDomain: "akar-creations-1e5fb.web.app",
   projectId: "akar-creations-1e5fb",
   storageBucket: "akar-creations-1e5fb.firebasestorage.app",
   messagingSenderId: "899969749265",
@@ -27,4 +27,8 @@ const ADMIN_EMAILS = ["pathakanubhav74@gmail.com"];
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
+const db = firebase.firestore();
+// Force correct auth domain for mobile redirect
+firebase.auth().settings.appVerificationDisabledForTesting = false;
+
 const db = firebase.firestore();

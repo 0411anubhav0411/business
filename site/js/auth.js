@@ -71,6 +71,7 @@ function friendlyAuthError(err) {
     "auth/user-not-found": "No account found with that email.",
     "auth/popup-closed-by-user": "Sign-in was cancelled.",
     "auth/network-request-failed": "Network error. Please check your connection.",
+    "auth/unauthorized-domain": "Domain not authorized in Firebase Console.",
   };
   return map[err.code] || err.message || "Something went wrong. Please try again.";
 }
@@ -79,20 +80,24 @@ function friendlyAuthError(err) {
 async function recordLogin(user) {
   if (!user || typeof db === "undefined") return;
 
-  const ref = db.collection("users").doc(user.uid);
-  const snap = await ref.get();
-  const base = {
-    name: user.displayName || "",
-    email: user.email || "",
-    photoURL: user.photoURL || "",
-    lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-  };
+  try {
+    const ref = db.collection("users").doc(user.uid);
+    const snap = await ref.get();
+    const base = {
+      name: user.displayName || "",
+      email: user.email || "",
+      photoURL: user.photoURL || "",
+      lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+    };
 
-  if (!snap.exists) {
-    base.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    if (!snap.exists) {
+      base.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    }
+
+    await ref.set(base, { merge: true });
+  } catch (err) {
+    console.error("Error updating user document:", err);
   }
-
-  await ref.set(base, { merge: true });
 }
 
 function signOutUser() {
@@ -109,11 +114,10 @@ function routeUserAfterLogin(user) {
   }
 }
 
-// Check redirect login results (mobile & desktop redirect flows)
+// Check redirect login results (fallback for browsers that block popups)
 auth.getRedirectResult()
   .then(async (result) => {
     if (result && result.user) {
-      sessionStorage.removeItem("googleRedirect");
       await recordLogin(result.user);
       routeUserAfterLogin(result.user);
     }
@@ -142,6 +146,20 @@ auth.onAuthStateChanged((user) => {
 
 // Event Listeners
 document.addEventListener("DOMContentLoaded", () => {
+  // 1. Profile / Sign In button click trigger
+  const authBtn = document.getElementById("authBtn");
+  if (authBtn) {
+    authBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (currentUser) {
+        routeUserAfterLogin(currentUser);
+      } else {
+        openAuth("signin");
+      }
+    });
+  }
+
+  // 2. Email/Password Submit
   const authSubmitBtn = document.getElementById("authSubmit");
   if (authSubmitBtn) {
     authSubmitBtn.addEventListener("click", async () => {
@@ -165,9 +183,11 @@ document.addEventListener("DOMContentLoaded", () => {
           const cred = await auth.createUserWithEmailAndPassword(email, password);
           if (name) await cred.user.updateProfile({ displayName: name });
           await recordLogin(cred.user);
+          routeUserAfterLogin(cred.user);
         } else {
           const cred = await auth.signInWithEmailAndPassword(email, password);
           await recordLogin(cred.user);
+          routeUserAfterLogin(cred.user);
         }
         closeAuth();
       } catch (err) {
@@ -176,18 +196,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // 3. Google Sign-In (Popup first with automatic Redirect fallback)
   const googleBtn = document.getElementById("googleBtn");
   if (googleBtn) {
     googleBtn.addEventListener("click", async () => {
       try {
-        sessionStorage.setItem("googleRedirect", "pending");
-        await auth.signInWithRedirect(googleProvider);
+        const result = await auth.signInWithPopup(googleProvider);
+        if (result && result.user) {
+          await recordLogin(result.user);
+          closeAuth();
+          routeUserAfterLogin(result.user);
+        }
       } catch (err) {
-        showAuthError(friendlyAuthError(err));
+        if (err.code === "auth/popup-blocked") {
+          await auth.signInWithRedirect(googleProvider);
+        } else {
+          showAuthError(friendlyAuthError(err));
+        }
       }
     });
   }
 
+  // 4. Modal Close Handlers
   const closeAuthBtn = document.getElementById("closeAuth");
   if (closeAuthBtn) {
     closeAuthBtn.addEventListener("click", closeAuth);

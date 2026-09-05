@@ -1,3 +1,15 @@
+// Handle Google redirect result on page load (mobile)
+auth.getRedirectResult().then(async (result) => {
+  if (result && result.user) {
+    await recordLogin(result.user);
+    closeAuth();
+  }
+}).catch((err) => {
+  if (err.code !== 'auth/no-auth-event') {
+    showAuthError(friendlyAuthError(err));
+  }
+});
+
 let currentUser = null;
 let authMode = "signin";
 
@@ -78,9 +90,8 @@ document.getElementById("authSubmit").addEventListener("click", async () => {
 
 document.getElementById("googleBtn").addEventListener("click", async () => {
   try {
-    const cred = await auth.signInWithPopup(googleProvider);
-    await recordLogin(cred.user);
-    closeAuth();
+    // Use redirect instead of popup for mobile compatibility
+    await auth.signInWithRedirect(googleProvider);
   } catch (err) {
     showAuthError(friendlyAuthError(err));
   }

@@ -123,9 +123,13 @@ auth.getRedirectResult().then(async (result) => {
     closeAuth();
   }
 }).catch((err) => {
-  if (err.code !== 'auth/no-auth-event') {
-    showAuthError(friendlyAuthError(err));
-  }
+  // Shows error visually on mobile so you can see what's happening
+  document.body.insertAdjacentHTML('afterbegin',
+    `<div style="position:fixed;top:0;left:0;right:0;background:red;color:white;
+    padding:16px;z-index:9999;font-size:14px;word-break:break-all;">
+    REDIRECT ERROR: ${err.code} — ${err.message}
+    </div>`
+  );
 });
 
 // Profile icon click — redirect to profile or admin based on email

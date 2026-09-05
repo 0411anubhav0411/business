@@ -3,7 +3,9 @@
 // so you can see who signed up / logged in from your admin page
 // or the Firebase console (Authentication tab + "users" collection).
 // ============================================================
-
+if (typeof ADMIN_EMAILS === "undefined") {
+  var ADMIN_EMAILS = ["pathakanubhav74@gmail.com"];
+}
 let currentUser = null;
 let authMode = "signin"; // or "signup"
 
@@ -110,6 +112,8 @@ function signOutUser() {
 
 // Keep UI in sync with auth state
 // Keep UI in sync with auth state
+// Keep UI in sync with auth state
+// Keep UI in sync with auth state
 auth.onAuthStateChanged((user) => {
   currentUser = user;
   const btn = document.getElementById("authBtn");
@@ -124,10 +128,13 @@ auth.onAuthStateChanged((user) => {
     btn.title = "Sign in";
   }
 
-  // PLACE THE CLICK LISTENER HERE:
-  btn.onclick = () => {
+  btn.onclick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (currentUser) {
-      const allowedAdmins = typeof ADMIN_EMAILS !== "undefined" ? ADMIN_EMAILS : ["pathakanubhav74@gmail.com"];
+      const allowedAdmins = typeof ADMIN_EMAILS !== "undefined" 
+        ? ADMIN_EMAILS 
+        : ["busineswithpathak@gmail.com", "pathakanubhav74@gmail.com"];
       if (allowedAdmins.includes(currentUser.email)) {
         window.location.href = "admin.html";
       } else {
@@ -137,7 +144,7 @@ auth.onAuthStateChanged((user) => {
       openAuth("signin");
     }
   };
-}););
+});
 
 document.getElementById("closeAuth").addEventListener("click", closeAuth);
 document.getElementById("authOverlay").addEventListener("click", (e) => {

@@ -138,16 +138,18 @@ auth.getRedirectResult().then(async (result) => {
 });
 
 // Profile icon click — redirect to profile or admin based on email
-document.getElementById("authBtn").addEventListener("click", (e) => {
-  e.stopPropagation();
-  if (currentUser) {
-    if (ADMIN_EMAILS.includes(currentUser.email)) {
-      window.location.href = "admin.html";
+document.getElementById("googleBtn").addEventListener("click", async () => {
+  try {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      await auth.signInWithRedirect(googleProvider);
     } else {
-      window.location.href = "profile.html";
+      const cred = await auth.signInWithPopup(googleProvider);
+      await recordLogin(cred.user);
+      closeAuth();
     }
-  } else {
-    openAuth("signin");
+  } catch (err) {
+    showAuthError(friendlyAuthError(err));
   }
 });
 

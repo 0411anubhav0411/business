@@ -104,13 +104,25 @@ function signOutUser() {
 }
 
 // Keep UI in sync with auth state
-auth.onAuthStateChanged((user) => {
+auth.onAuthStateChanged(async (user) => {
   currentUser = user;
   const btn = document.getElementById("authBtn");
+
   if (user) {
     const initial = (user.displayName || user.email || "?").charAt(0).toUpperCase();
     btn.innerHTML = `<span class="user-chip"><span class="avatar">${initial}</span></span>`;
     btn.title = user.displayName || user.email;
+
+    const redirectResult = sessionStorage.getItem("googleRedirect");
+    if (redirectResult === "pending") {
+      sessionStorage.removeItem("googleRedirect");
+      await recordLogin(user);
+      if (ADMIN_EMAILS.includes(user.email)) {
+        window.location.href = "admin.html";
+      } else {
+        window.location.href = "profile.html";
+      }
+    }
   } else {
     btn.innerHTML = "👤";
     btn.title = "Sign in";
@@ -139,20 +151,13 @@ auth.getRedirectResult().then(async (result) => {
 
 // Profile icon click — redirect to profile or admin based on email
 document.getElementById("googleBtn").addEventListener("click", async () => {
+  sessionStorage.setItem("googleRedirect", "pending");
   try {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
-      await auth.signInWithRedirect(googleProvider);
-    } else {
-      const cred = await auth.signInWithPopup(googleProvider);
-      await recordLogin(cred.user);
-      closeAuth();
-    }
+    await auth.signInWithRedirect(googleProvider);
   } catch (err) {
     showAuthError(friendlyAuthError(err));
   }
 });
-
 document.getElementById("closeAuth").addEventListener("click", closeAuth);
 document.getElementById("authOverlay").addEventListener("click", (e) => {
   if (e.target.id === "authOverlay") closeAuth();

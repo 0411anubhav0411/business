@@ -3,7 +3,6 @@
 // so you can see who signed up / logged in from your admin page
 // or the Firebase console (Authentication tab + "users" collection).
 // ============================================================
-
 let currentUser = null;
 let authMode = "signin"; // or "signup"
 
@@ -122,9 +121,18 @@ auth.onAuthStateChanged((user) => {
   }
 });
 
-document.getElementById("authBtn").addEventListener("click", () => {
+document.getElementById("authBtn").addEventListener("click", (e) => {
+  e.stopPropagation();
   if (currentUser) {
-    if (confirm(`Signed in as ${currentUser.email}. Sign out?`)) signOutUser();
+    const allowedAdmins = typeof ADMIN_EMAILS !== "undefined"
+      ? ADMIN_EMAILS
+      : ["busineswithpathak@gmail.com", "pathakanubhav74@gmail.com"];
+
+    if (allowedAdmins.includes(currentUser.email)) {
+      window.location.href = "admin.html";
+    } else {
+      window.location.href = "profile.html";
+    }
   } else {
     openAuth("signin");
   }

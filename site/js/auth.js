@@ -307,4 +307,17 @@ document.getElementById("closeAuth")?.addEventListener("click", closeAuth);
 document.getElementById("authOverlay")?.addEventListener("click", (e) => {
   if (e.target.id === "authOverlay") closeAuth();
 });
+// Profile icon click → redirect to profile.html
+const profileIcon = document.getElementById("profileIcon");
 
+if (profileIcon) {
+  profileIcon.addEventListener("click", () => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        window.location.href = "profile.html"; // logged in → go to profile
+      } else {
+        window.location.href = "index.html";   // not logged in → back to home
+      }
+    });
+  });
+}

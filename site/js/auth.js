@@ -1,10 +1,5 @@
-// ============================================================
-// AUTH — Firebase Authentication + logs every login to Firestore
-// so you can see who signed up / logged in from your admin page
-// or the Firebase console (Authentication tab + "users" collection).
-// ============================================================
 let currentUser = null;
-let authMode = "signin"; // or "signup"
+let authMode = "signin";
 
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
@@ -14,9 +9,11 @@ function openAuth(mode = "signin") {
   document.getElementById("authError").style.display = "none";
   refreshAuthModalText();
 }
+
 function closeAuth() {
   document.getElementById("authOverlay").classList.remove("open");
 }
+
 function refreshAuthModalText() {
   const isSignup = authMode === "signup";
   document.getElementById("authTitle").textContent = isSignup ? "Create an account" : "Sign in";
@@ -34,15 +31,13 @@ function refreshAuthModalText() {
     refreshAuthModalText();
   };
 }
+
 function showAuthError(msg) {
   const el = document.getElementById("authError");
   el.textContent = msg;
   el.style.display = "block";
 }
 
-// Writes/updates a doc in Firestore "users" collection every time someone logs in.
-// This is how you "know who logged in on the site" from outside Firebase Auth's
-// own dashboard — e.g. to show a customer list in admin.html.
 async function recordLogin(user) {
   const ref = db.collection("users").doc(user.uid);
   const snap = await ref.get();
@@ -121,14 +116,11 @@ auth.onAuthStateChanged((user) => {
   }
 });
 
+// Profile icon click — redirect to profile or admin based on email
 document.getElementById("authBtn").addEventListener("click", (e) => {
   e.stopPropagation();
   if (currentUser) {
-    const allowedAdmins = typeof ADMIN_EMAILS !== "undefined"
-      ? ADMIN_EMAILS
-      : ["busineswithpathak@gmail.com", "pathakanubhav74@gmail.com"];
-
-    if (allowedAdmins.includes(currentUser.email)) {
+    if (ADMIN_EMAILS.includes(currentUser.email)) {
       window.location.href = "admin.html";
     } else {
       window.location.href = "profile.html";
@@ -138,3 +130,7 @@ document.getElementById("authBtn").addEventListener("click", (e) => {
   }
 });
 
+document.getElementById("closeAuth").addEventListener("click", closeAuth);
+document.getElementById("authOverlay").addEventListener("click", (e) => {
+  if (e.target.id === "authOverlay") closeAuth();
+});

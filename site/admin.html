@@ -1,125 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Akaar Creations</title>
-<link rel="stylesheet" href="css/style.css">
-<style>
-  body{background:var(--ivory)}
-  .admin-wrap{max-width:900px;margin:0 auto;padding:50px 24px 100px}
-  .admin-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px}
-  .admin-tabs{display:flex;gap:10px;margin-bottom:30px}
-  .admin-tab{padding:9px 18px;font-size:13.5px;border:1px solid var(--stone-line);color:var(--stone)}
-  .admin-tab.active{border-color:var(--bronze);background:rgba(171,127,71,.12);color:var(--ink)}
-  .panel{display:none}
-  .panel.active{display:block}
-  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;background:#fff;border:1px solid var(--stone-line);padding:28px;margin-bottom:36px}
-  .form-grid .field{margin-bottom:0}
-  .form-grid .full{grid-column:1/-1}
-  table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--stone-line)}
-  th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--stone-line);font-size:13.5px}
-  th{background:var(--ivory-dim);color:var(--stone);font-weight:600;font-size:12px;letter-spacing:.04em}
-  .gate{max-width:380px;margin:120px auto;text-align:center}
-  .gate .btn{margin-top:20px}
-</style>
-</head>
-<body>
-
-<div id="gate" class="gate">
-  <h2 style="font-size:28px;margin-bottom:10px">Admin sign-in</h2>
-  <p style="color:var(--stone);font-size:14px">Sign in with an approved admin email to manage the store.</p>
-  <button class="btn btn-solid" id="adminSignIn">Sign in with Google</button>
-</div>
-
-<div id="adminApp" class="admin-wrap" style="display:none">
-  <div class="admin-head">
-    <div class="brand">Shilpkala <span>Studio</span> · Admin</div>
-    <button class="btn btn-ghost" id="adminSignOut">Sign out</button>
-  </div>
-
-  <div class="admin-tabs">
-    <button class="admin-tab active" data-panel="products">Products</button>
-    <button class="admin-tab" data-panel="customers">Customers</button>
-    <button class="admin-tab" data-panel="orders">Orders</button>
-  </div>
-
-  <!-- PRODUCTS -->
-  <div class="panel active" id="panel-products">
-    <div class="form-grid">
-      <div class="field"><label>Name</label><input id="p_name" placeholder="Nataraja bronze statue"></div>
-      <div class="field"><label>Category</label>
-        <select id="p_category" style="width:100%;padding:12px 14px;border:1px solid var(--stone-line);font-family:inherit">
-          <option value="statues">Statues</option>
-          <option value="fountains">Fountains</option>
-          <option value="garden">Garden décor</option>
-        </select>
-      </div>
-      <div class="field"><label>Price (₹)</label><input id="p_price" type="number" placeholder="18500"></div>
-      <div class="field"><label>MRP / strike price (₹, optional)</label><input id="p_mrp" type="number" placeholder="22000"></div>
-      <div class="field"><label>Material</label><input id="p_material" placeholder="Bronze"></div>
-      <div class="field"><label>Height / size</label><input id="p_height" placeholder="24 in"></div>
-      <div class="field full"><label>Image URL</label><input id="p_image" placeholder="https://..."></div>
-      <div class="field full"><label>Description</label><input id="p_desc" placeholder="Lost-wax cast bronze, hand-finished patina."></div>
-      <div class="field"><label>Badge (optional)</label><input id="p_badge" placeholder="New"></div>
-      <div class="field"><label>In stock</label>
-        <select id="p_instock" style="width:100%;padding:12px 14px;border:1px solid var(--stone-line);font-family:inherit">
-          <option value="true">Yes</option>
-          <option value="false">No</option>
-        </select>
-      </div>
-      <div class="full"><button class="btn btn-solid" id="addProductBtn">Add product</button></div>
-    </div>
-    <table>
-      <thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th></th></tr></thead>
-      <tbody id="productsTable"></tbody>
-    </table>
-  </div>
-
-  <!-- CUSTOMERS -->
-  <div class="panel" id="panel-customers">
-    <p style="color:var(--stone);font-size:13.5px;margin-bottom:18px">Everyone who has signed in on the site — pulled from the "users" collection, updated on every login.</p>
-    <table>
-      <thead><tr><th>Name</th><th>Email</th><th>Last login</th></tr></thead>
-      <tbody id="customersTable"></tbody>
-    </table>
-  </div>
-
-  <!-- ORDERS -->
-  <div class="panel" id="panel-orders">
-    <p style="color:var(--stone);font-size:13.5px;margin-bottom:18px">Paid orders, saved by the server after Razorpay verifies each payment.</p>
-    <table>
-      <thead><tr><th>Order</th><th>Customer</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
-      <tbody id="ordersTable"></tbody>
-    </table>
-  </div>
-</div>
-
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
 <script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+
 <script>
 const provider = new firebase.auth.GoogleAuthProvider();
 
-document.getElementById("adminSignIn").addEventListener("click", () => auth.signInWithPopup(provider).catch(e => alert(e.message)));
-document.getElementById("adminSignOut").addEventListener("click", () => auth.signOut());
+document.getElementById("adminSignIn").addEventListener("click", () => {
+  auth.signInWithPopup(provider).catch(e => alert(e.message));
+});
+
+document.getElementById("adminSignOut").addEventListener("click", () => {
+  auth.signOut().then(() => {
+    window.location.href = "index.html";
+  });
+});
 
 auth.onAuthStateChanged((user) => {
-  const isAdmin = user && ADMIN_EMAILS.includes(user.email);
+  // Checks ADMIN_EMAILS defined in auth.js or defaults to authorized list
+  const allowedAdmins = typeof ADMIN_EMAILS !== "undefined" ? ADMIN_EMAILS : ["busineswithpathak@gmail.com", "pathakanubhav74@gmail.com"];
+  const isAdmin = user && user.email && allowedAdmins.includes(user.email);
+
   document.getElementById("gate").style.display = isAdmin ? "none" : "block";
   document.getElementById("adminApp").style.display = isAdmin ? "block" : "none";
+
   if (isAdmin) {
     loadProductsTable();
     loadCustomers();
     loadOrders();
   } else if (user) {
-    alert("This Google account isn't on the admin list (see ADMIN_EMAILS in js/firebase-config.js).");
+    alert("This account (" + user.email + ") is not authorized as an admin.");
     auth.signOut();
   }
 });
 
-// Tabs
+// Tabs navigation
 document.querySelectorAll(".admin-tab").forEach((tab) => {
   tab.addEventListener("click", () => {
     document.querySelectorAll(".admin-tab").forEach((t) => t.classList.remove("active"));
@@ -129,11 +45,12 @@ document.querySelectorAll(".admin-tab").forEach((tab) => {
   });
 });
 
-// Products
+// Products Management
 document.getElementById("addProductBtn").addEventListener("click", async () => {
   const name = document.getElementById("p_name").value.trim();
   const price = Number(document.getElementById("p_price").value);
   if (!name || !price) return alert("Name and price are required.");
+
   await db.collection("products").add({
     name,
     category: document.getElementById("p_category").value,
@@ -147,7 +64,12 @@ document.getElementById("addProductBtn").addEventListener("click", async () => {
     inStock: document.getElementById("p_instock").value === "true",
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
-  ["p_name","p_price","p_mrp","p_material","p_height","p_image","p_desc","p_badge"].forEach(id => document.getElementById(id).value = "");
+
+  ["p_name","p_price","p_mrp","p_material","p_height","p_image","p_desc","p_badge"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+
   loadProductsTable();
 });
 
@@ -162,13 +84,14 @@ async function loadProductsTable() {
     </tr>`;
   }).join("") || `<tr><td colspan="5" style="color:var(--stone)">No products yet.</td></tr>`;
 }
+
 async function deleteProduct(id) {
   if (!confirm("Delete this product?")) return;
   await db.collection("products").doc(id).delete();
   loadProductsTable();
 }
 
-// Customers
+// Customers Management
 async function loadCustomers() {
   const snap = await db.collection("users").orderBy("lastLogin", "desc").get();
   document.getElementById("customersTable").innerHTML = snap.docs.map(d => {
@@ -178,7 +101,7 @@ async function loadCustomers() {
   }).join("") || `<tr><td colspan="3" style="color:var(--stone)">No logins yet.</td></tr>`;
 }
 
-// Orders
+// Orders Management
 async function loadOrders() {
   const snap = await db.collection("orders").orderBy("createdAt", "desc").get();
   document.getElementById("ordersTable").innerHTML = snap.docs.map(d => {
@@ -188,5 +111,3 @@ async function loadOrders() {
   }).join("") || `<tr><td colspan="5" style="color:var(--stone)">No orders yet.</td></tr>`;
 }
 </script>
-</body>
-</html>

@@ -1,4 +1,4 @@
-# Shilpkala Studio — e-commerce site
+# Akaar Creations — e-commerce site
 
 A statues & fountains storefront with Firebase login tracking and Razorpay
 payments. Plain HTML/CSS/JS on the front end — no build step required — plus

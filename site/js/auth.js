@@ -126,6 +126,17 @@ auth.onAuthStateChanged((user) => {
     btn.title = "Sign in";
   }
 });
+// ← MOVE IT HERE (after all functions are defined)
+auth.getRedirectResult().then(async (result) => {
+  if (result && result.user) {
+    await recordLogin(result.user);
+    closeAuth();
+  }
+}).catch((err) => {
+  if (err.code !== 'auth/no-auth-event') {
+    showAuthError(friendlyAuthError(err));
+  }
+});
 
 // Profile icon click — redirect to profile or admin based on email
 document.getElementById("authBtn").addEventListener("click", (e) => {

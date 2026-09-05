@@ -117,17 +117,22 @@ auth.onAuthStateChanged((user) => {
   }
 });
 // ← MOVE IT HERE (after all functions are defined)
+// Handle Google redirect result (mobile fix)
 auth.getRedirectResult().then(async (result) => {
   if (result && result.user) {
     await recordLogin(result.user);
-    closeAuth();
+    // Redirect based on email after successful Google login
+    if (ADMIN_EMAILS.includes(result.user.email)) {
+      window.location.href = "admin.html";
+    } else {
+      window.location.href = "profile.html";
+    }
   }
 }).catch((err) => {
-  // Shows error visually on mobile so you can see what's happening
   document.body.insertAdjacentHTML('afterbegin',
     `<div style="position:fixed;top:0;left:0;right:0;background:red;color:white;
     padding:16px;z-index:9999;font-size:14px;word-break:break-all;">
-    REDIRECT ERROR: ${err.code} — ${err.message}
+    ERROR: ${err.code} — ${err.message}
     </div>`
   );
 });

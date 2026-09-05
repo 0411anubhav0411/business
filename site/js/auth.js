@@ -33,6 +33,22 @@ function refreshAuthModalText() {
     refreshAuthModalText();
   };
 }
+// Explicitly catch redirect result
+auth.getRedirectResult().then(async (result) => {
+  if (result && result.user) {
+    sessionStorage.removeItem("googleRedirect");
+    await recordLogin(result.user);
+    if (ADMIN_EMAILS.includes(result.user.email)) {
+      window.location.href = "admin.html";
+    } else {
+      window.location.href = "profile.html";
+    }
+  }
+}).catch((err) => {
+  if (err.code && err.code !== 'auth/no-auth-event') {
+    showAuthError(friendlyAuthError(err));
+  }
+});
 
 function showAuthError(msg) {
   const el = document.getElementById("authError");

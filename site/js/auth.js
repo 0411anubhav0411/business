@@ -139,13 +139,6 @@ auth.onAuthStateChanged((user) => {
   };
 }););
 
-document.getElementById("authBtn").addEventListener("click", () => {
-  if (currentUser) {
-    if (confirm(`Signed in as ${currentUser.email}. Sign out?`)) signOutUser();
-  } else {
-    openAuth("signin");
-  }
-});
 document.getElementById("closeAuth").addEventListener("click", closeAuth);
 document.getElementById("authOverlay").addEventListener("click", (e) => {
   if (e.target.id === "authOverlay") closeAuth();

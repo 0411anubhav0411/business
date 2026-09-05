@@ -5,7 +5,8 @@
 // ============================================================
 
 // List of admin email addresses eligible for admin dashboard access
-const ADMIN_EMAILS = ["pathakanubhav74@gmail.com"];
+if (typeof ADMIN_EMAILS === "undefined"){
+const ADMIN_EMAILS = ["pathakanubhav74@gmail.com"];}
 
 let currentUser = null;
 let authMode = "signin"; // or "signup"

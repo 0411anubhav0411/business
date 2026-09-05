@@ -137,7 +137,4 @@ document.getElementById("authBtn").addEventListener("click", (e) => {
     openAuth("signin");
   }
 });
-document.getElementById("closeAuth").addEventListener("click", closeAuth);
-document.getElementById("authOverlay").addEventListener("click", (e) => {
-  if (e.target.id === "authOverlay") closeAuth();
-});
+
